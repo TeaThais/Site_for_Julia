@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center h-100">
+<h3 class="mb-4 p-1 pt-3"> {{ post.title }} </h3>
+</div>
+{% if post.image %}
+
+ <img class="rounded mx-auto d-block w-25" src="{{ post.image.url }}" alt="">
+
+{% endif %}
+
+<div class="justify-content-center align-items-center ms-5 p-5 ps-3 pt-2">
+
+<p>
+    {{ post.content| linebreaks }}
+</p>
+</div>
+
+        {% block post %}
+    {% endblock %}
+
+{% endblock %}

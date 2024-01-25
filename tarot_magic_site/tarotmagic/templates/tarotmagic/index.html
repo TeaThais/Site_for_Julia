@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="p-5">
+    <div  style="text-align:center;">
+    <h4>  {{ my_post.title }}  </h4>
+</div>
+
+
+<div >
+<img src="{% static 'photos/photo_2023-08-22_19-28-44.jpg' %}" class="rounded mx-auto d-block p-3 w-25" alt="photo">
+    <div  style="text-align:center;">
+
+        <p class="fs-5 fst-italic text-start">
+    {{ my_post.content}}
+
+        </p>
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-dark-subtle p-2 bg-opacity-75 justify-content-center">
+  <div class="container-fluid">
+
+     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar3" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+ <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar3" aria-labelledby="offcanvasNavbar3Label">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbar3Label">Menu</h5>
+       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+ </div>
+     <div class="offcanvas-body">
+
+{% show_navbar_menu %}
+
+
+     <form class="d-flex" role="search" action="{% url 'magic_search' %}" method="POST">
+         {% csrf_token %}
+        <input class="form-control me-sm-2" name="name" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+</div>
+         </div>
+</div>
+</nav>
+
+
+
+<!--    <h3> {{ title }} </h3>-->
+<!--    {% if title in services.0.title %}-->
+<!--        <p> {{ services.0.content }} </p>-->
+<!--    {% elif title in services.1.title %}-->
+<!--        <p> {{ services.1.content }} </p>-->
+<!--    {% elif title in services.2.title %}-->
+<!--        <p> {{ services.2.content }} </p>-->
+<!--    {% endif %}-->
+
+<!-- Jumbotron -->
+
+  <div id="intro-example" class="p-5 text-center bg-image"
+    style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thespruce.com%2Fthmb%2FrI3tJ39O8yNLEKhs-TH90vZ_zuo%3D%2F4430x2957%2Ffilters%3Afill(auto%2C1)%2Feastern-white-pine-trees-4125586-04-3b9e60ad3ac14efba38ce0ec72b6770d.jpg&f=1&nofb=1&ipt=e102d087b9cb07ac98a8acf79f8421bb86dadf677b1f4a421c6ac5b0cda8ce4e&ipo=images');">
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.7);">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <h1 class="mb-3">{{ offers.title }} </h1>
+          <h5 class="mb-4">
+            {{ offers.description }}
+          </h5>
+          <a class="btn btn-outline-light btn-lg m-2" href="https://www.youtube.com/watch?v=c9B4TPnak1A"
+            role="button" rel="nofollow" target="_blank"> Напишите мне </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Jumbotron -->
+
+
+    {% for p in posts %}
+
+ <img class="rounded mx-auto d-block w-25 float-lg-start p-5" src="{{ p.image.url }}" alt="">
+    <div class="p-5"><h2>{{p.title}}</h2>
+         {% autoescape off %}
+         {{p.content|linebreaks|truncatewords:30}}
+         {% endautoescape %}
+    <div class="clear"></div>
+    <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+    </div>
+
+
+    {% endfor %}
+
+
+
+ {% endblock %}
