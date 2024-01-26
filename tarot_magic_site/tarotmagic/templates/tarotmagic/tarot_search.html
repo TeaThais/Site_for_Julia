@@ -30,8 +30,6 @@
 </nav>
 
 
-<!-- Jumbotron -->
-
   <div id="intro-example" class="p-5 text-center bg-image"
     style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thespruce.com%2Fthmb%2FrI3tJ39O8yNLEKhs-TH90vZ_zuo%3D%2F4430x2957%2Ffilters%3Afill(auto%2C1)%2Feastern-white-pine-trees-4125586-04-3b9e60ad3ac14efba38ce0ec72b6770d.jpg&f=1&nofb=1&ipt=e102d087b9cb07ac98a8acf79f8421bb86dadf677b1f4a421c6ac5b0cda8ce4e&ipo=images');">
     <div class="mask" style="background-color: rgba(0, 0, 0, 0.7);">
@@ -48,24 +46,26 @@
       </div>
     </div>
   </div>
-<!-- Jumbotron -->
-
 
 {% if posts %}
-<ul>
-
     {% for p in posts %}
 
-    <li><h2>{{p.title}}</h2>
+<table class="bg-body-secondary">
+  <tbody>
+    <tr>
+      <td  style="width:30%"><img class="w-50 float-lg-start p-5" src="{{ p.image.url }}" alt=""></td>
+      <td>    <div class="mw-50 px-5 pt-5"><h2>{{p.title}}</h2>
          {% autoescape off %}
          {{p.content|linebreaks|truncatewords:30}}
          {% endautoescape %}
-                            <div class="clear"></div>
-                            <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
-                            </li>
+          </div>
+          <div style="width:10%" class="mw-50 px-5"><a href="{{ p.get_absolute_url }}">Читать</a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
     {% endfor %}
 
-</ul>
 {% else %}
     <h3 class="p-3">Ничего не найдено по запросу</h3>
 {% endif %}
