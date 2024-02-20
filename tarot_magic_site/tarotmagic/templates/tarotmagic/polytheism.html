@@ -39,8 +39,8 @@
           <h5 class="mb-4">
             {{ offers.description }}
           </h5>
-          <a class="btn btn-outline-light btn-lg m-2" href="{% url 'contact' %}"
-            role="button" rel="nofollow" > Напишите мне </a>
+          <a class="btn btn-outline-light btn-lg m-2" href="https://t.me/BelkaJuli"
+            role="button" rel="nofollow" target="_blank"> Напишите мне в Телеграм </a>
 
         </div>
       </div>
@@ -48,12 +48,12 @@
   </div>
 
 
-{% for p in posts %}
+{% for p in page_obj %}
 
 <table class="bg-body-secondary">
   <tbody>
     <tr>
-      <td  style="width:30%"><img class="w-50 float-lg-start p-5" src="{{ p.image.url }}" alt=""></td>
+      <td  style="width:30%"><img class="w-50 p-5" src="{{ p.image.url }}" alt=""></td>
       <td>    <div class="mw-50 px-5 pt-5"><h2>{{p.title}}</h2>
          {% autoescape off %}
          {{p.content|linebreaks|truncatewords:30}}
@@ -66,6 +66,17 @@
 </table>
 
     {% endfor %}
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center py-5">
+        {% for p in page_obj.paginator.page_range %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
 
 
 

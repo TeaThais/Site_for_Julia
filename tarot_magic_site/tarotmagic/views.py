@@ -1,16 +1,17 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from django.db.models import Q
 
-from tarotmagic.models import Polytheism, Tarot, Magic, Offer, MainPage
+
+from tarotmagic.models import Polytheism, Tarot, Magic, Offer, MainPage, Feedback
 
 # Create your views here.
 
 menu = [
-    {'title': 'HOME', 'url_name': 'home'},
-    {'title': 'SERVICES', 'url_name': 'services'},
-    {'title': 'FEEDBACK', 'url_name': 'interesting'},
-    {'title': 'CONTACT', 'url_name': 'contact'},
+    {'title': 'ОБО МНЕ', 'url_name': 'home'},
+    {'title': 'УСЛУГИ', 'url_name': 'services'},
+    {'title': 'ОТЗЫВЫ', 'url_name': 'feedback'},
 ]
 
 # data_db = [
@@ -42,12 +43,18 @@ def services(request):
 
 def polytheism(request):
     posts = Polytheism.published.all()
+
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     offers = get_object_or_404(Offer, id=3)
     data = {
         'title': 'POLYTHEISM',
         'menu': menu,
         'posts': posts,
-        'offers': offers
+        'offers': offers,
+        'page_obj': page_obj
     }
     return render(request, 'tarotmagic/polytheism.html', context=data)
 
@@ -60,24 +67,36 @@ def polytheism_search(request):
                                                 | Q(content__contains=search_str.capitalize())
                                                 | Q(title__contains=search_str)
                                                 | Q(content__contains=search_str))
+
+            paginator = Paginator(results, 5)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
             offers = get_object_or_404(Offer, id=3)
             data = {
                 'title': 'POLYTHEISM',
                 'menu': menu,
                 'posts': results,
-                'offers': offers
+                'offers': offers,
+                'page_obj': page_obj
                 }
             return render(request, 'tarotmagic/polytheism_search.html', context=data)
 
 
 def magic(request):
     posts = Magic.published.all()
+
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     offers = get_object_or_404(Offer, id=2)
     data = {
         'title': 'MAGIC',
         'menu': menu,
         'posts': posts,
-        'offers': offers
+        'offers': offers,
+        'page_obj': page_obj
     }
     return render(request, 'tarotmagic/magic.html', context=data)
 
@@ -90,24 +109,36 @@ def magic_search(request):
                                                 | Q(content__contains=search_str.capitalize())
                                                 | Q(title__contains=search_str)
                                                 | Q(content__contains=search_str))
+
+            paginator = Paginator(results, 5)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
             offers = get_object_or_404(Offer, id=2)
             data = {
                 'title': 'MAGIC',
                 'menu': menu,
                 'posts': results,
-                'offers': offers
+                'offers': offers,
+                'page_obj': page_obj
                 }
             return render(request, 'tarotmagic/magic_search.html', context=data)
 
 
 def tarot(request):
     posts = Tarot.published.all()
+
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     offers = get_object_or_404(Offer, id=1)
     data = {
         'title': 'TAROT',
         'menu': menu,
         'posts': posts,
-        'offers': offers
+        'offers': offers,
+        'page_obj': page_obj
     }
     return render(request, 'tarotmagic/tarot.html', context=data)
 
@@ -120,12 +151,18 @@ def tarot_search(request):
                                                 | Q(content__contains=search_str.capitalize())
                                                 | Q(title__contains=search_str)
                                                 | Q(content__contains=search_str))
+
+            paginator = Paginator(results, 5)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
             offers = get_object_or_404(Offer, id=1)
             data = {
                 'title': 'TAROT',
                 'menu': menu,
                 'posts': results,
-                'offers': offers
+                'offers': offers,
+                'page_obj': page_obj
                 }
             return render(request, 'tarotmagic/tarot_search.html', context=data)
 
@@ -166,20 +203,18 @@ def tarot_show_post(request, post_slug):
     return render(request, 'tarotmagic/post_tarot.html', context=data)
 
 
-def interesting(request):
+def feedback(request):
+    feed_posts = Feedback.objects.all()
+
+    posts_ids = [int(x.id) - 1 for x in feed_posts]
+
     data = {
-        'title': 'Interesting',
-        'menu': menu
+        'title': 'Отзывы',
+        'menu': menu,
+        'feed_posts': feed_posts,
+        'posts_ids': posts_ids
     }
     return render(request, 'tarotmagic/feedback.html', context=data)
-
-
-def contact(request):
-    data = {
-        'title': 'Contact',
-        'menu': menu
-    }
-    return render(request, 'base.html', context=data)
 
 
 def page_not_found(request, exception):
